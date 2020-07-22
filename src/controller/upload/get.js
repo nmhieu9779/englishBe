@@ -11,7 +11,7 @@ module.exports = async function get(req, res, next) {
         }),
       ),
     ).then((data) => {
-      res.status(200).json(
+      return res.status(200).json(
         data.map(([url], idx) => ({
           url,
           name: files[idx].name,
