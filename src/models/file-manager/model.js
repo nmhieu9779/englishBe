@@ -5,6 +5,6 @@ schema.pre("save", function () {
   return doStuff().then(() => doMoreStuff());
 });
 
-const Upload = mongoose.model("Upload", schema);
+const FileManager = mongoose.model("FileManager", schema);
 
-module.exports = Upload;
+module.exports = FileManager;

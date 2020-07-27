@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-router.use("/upload", require("../src/controller/upload"));
+router.use("/file-manager", require("../src/controller/file-manager"));
 
 module.exports = router;

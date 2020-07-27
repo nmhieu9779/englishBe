@@ -4,13 +4,15 @@ const fs = require("fs");
 
 module.exports = async function get(req, res, next) {
   try {
-    const {
+    let {
       file: { path, originalname },
+      body: { path: folder, note },
     } = req;
+    folder = folder ? `root/${folder}/` : `root/${folder}`;
     await bucket.upload(
       path,
       {
-        destination: originalname,
+        destination: `${folder}${originalname}`,
         metadata: {
           metadata: {
             firebaseStorageDownloadTokens: uuid(),
