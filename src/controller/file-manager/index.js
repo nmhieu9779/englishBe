@@ -1,10 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const get = require("./get");
+const create = require("./create");
+const download = require("./download");
+const logs = require("./logs");
 
-router.get("/", require("./get"));
-router.post("/create", upload.single("image"), require("./create"));
-router.get("/download", require("./download"));
-
-module.exports = router;
+module.exports = {
+  get,
+  create,
+  download,
+  logs,
+};

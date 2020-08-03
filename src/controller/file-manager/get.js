@@ -1,6 +1,6 @@
 const { bucket } = require("../../gcloud");
-
-module.exports = async function get({ query: { directory = "" } }, res, next) {
+const { successResponseWithData } = require("../../helpers/apiResponse");
+module.exports = function get({ query: { directory = "" } }, res, next) {
   try {
     bucket.getFiles(
       {
@@ -27,10 +27,7 @@ module.exports = async function get({ query: { directory = "" } }, res, next) {
           path = path.split("/");
           folders.push(path[path.length - 2]);
         });
-        return res.status(200).json({
-          files,
-          folders,
-        });
+        return successResponseWithData(res, "", { files, folders });
       },
     );
   } catch (error) {

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  filename: {
+  fileName: {
     type: String,
     required: [true],
   },
@@ -15,6 +15,9 @@ const schema = new Schema({
   fileUrl: {
     type: String,
     required: [true],
+  },
+  note: {
+    type: String,
   },
 });
 module.exports = { schema };
