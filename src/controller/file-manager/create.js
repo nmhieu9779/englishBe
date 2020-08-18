@@ -1,8 +1,8 @@
 const { bucket } = require("../../gcloud");
 const { uuid } = require("uuidv4");
-const { successResponse } = require("../../helpers/apiResponse");
+const { successResponse, errorResponse } = require("../../helpers/apiResponse");
 const fs = require("fs");
-const { FileManager } = require("../../models/file-manager");
+const { FileManager, Logs } = require("../../models/file-manager");
 
 const uploadFile = ({ path, folder, originalName }) =>
   bucket.upload(path, {
@@ -14,7 +14,7 @@ const uploadFile = ({ path, folder, originalName }) =>
     },
   });
 
-const createLogFile = ({ originalName: fileName, createdBy, fileUrl, note }) => {
+const createFile = ({ originalName: fileName, createdBy, fileUrl, note }) => {
   const fileManager = new FileManager({
     fileName,
     createdAt: new Date(),
@@ -25,6 +25,14 @@ const createLogFile = ({ originalName: fileName, createdBy, fileUrl, note }) => 
   return fileManager.save();
 };
 
+const createLog = ({ createdBy, originalName }) => {
+  const log = new Logs({
+    createdAt: new Date(),
+    message: `${createdBy} upload ${originalName}`,
+  });
+  return log.save();
+};
+
 module.exports = (req, res, next) => {
   let {
     file: { path, originalname: originalName },
@@ -33,13 +41,14 @@ module.exports = (req, res, next) => {
   folder = folder ? `root/${folder}/` : `root/${folder}`;
   Promise.all([
     uploadFile({ path, originalName, folder }),
-    createLogFile({ originalName, createdBy: "Hieu", fileUrl: `${folder}${originalName}`, note }),
+    createFile({ originalName, createdBy: "Hieu", fileUrl: `${folder}${originalName}`, note }),
+    createLog({ originalName, createdBy: "Hieu" }),
   ])
-    .then(([[file], { errors }]) => {
-      if (file && !errors) {
-        return successResponse(res, "Upload success");
+    .then(([[file], { errors: createFileErrors }, { errors: createLogErrors }]) => {
+      if (file && !createFileErrors && !createLogErrors) {
+        return successResponse(res, "Upload Successfully");
       }
-      return errorResponse(res, "Upload failure");
+      return errorResponse(res, "Upload Failure");
     })
     .catch((e) => {
       next(e);

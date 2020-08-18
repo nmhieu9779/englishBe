@@ -20,4 +20,14 @@ const schema = new Schema({
     type: String,
   },
 });
-module.exports = { schema };
+
+const logsSchema = new Schema({
+  createdAt: {
+    type: Date,
+  },
+  message: {
+    type: String,
+  },
+});
+
+module.exports = { schema, logsSchema };

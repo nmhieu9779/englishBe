@@ -13,16 +13,19 @@ module.exports = function get({ query: { directory = "" } }, res, next) {
         let files = [];
         let folders = [];
         const { prefixes = [] } = apiResponse;
-        responseFiles.forEach(({ name: path, metadata: { contentType, size } }) => {
-          let name = path.split("/");
-          name = name[name.length - 1];
-          files.push({
-            name,
-            contentType,
-            size,
-            path,
-          });
-        });
+        responseFiles.forEach(
+          ({ name: path, metadata: { contentType, size, updated: lastModified } }) => {
+            let name = path.split("/");
+            name = name[name.length - 1];
+            files.push({
+              name,
+              contentType,
+              size,
+              path,
+              lastModified,
+            });
+          },
+        );
         prefixes.forEach((path) => {
           path = path.split("/");
           folders.push(path[path.length - 2]);

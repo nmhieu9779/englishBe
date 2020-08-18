@@ -8,5 +8,6 @@ router.get("/", FileManagerController.get);
 router.post("/create", upload.single("image"), FileManagerController.create);
 router.get("/download", FileManagerController.download);
 router.get("/logs", FileManagerController.logs);
+router.delete("/delete", FileManagerController.deleteFile);
 
 module.exports = router;

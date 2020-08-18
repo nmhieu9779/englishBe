@@ -1,3 +1,3 @@
-const FileManager = require("./model");
+const { FileManager, Logs } = require("./model");
 
-module.exports = { FileManager };
+module.exports = { FileManager, Logs };
